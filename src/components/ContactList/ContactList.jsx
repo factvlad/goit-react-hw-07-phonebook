@@ -14,7 +14,7 @@ const ContactList = () => {
 
   useEffect(() => {
     dispatch(getContactsOperations());
-  }, []);
+  }, [dispatch]);
 
   function removeContact(id) {
     dispatch(removeContactsOperation(id));
