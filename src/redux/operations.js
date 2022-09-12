@@ -4,13 +4,13 @@ import {
   fetchPostContacts,
   fetchGetContacts,
   fetchDeleteContacts,
-} from "../services/api";
+} from "../share/api";
 import {
   getContacts,
   removeContacts,
   postContact,
 } from "./contacts/contacts-slice";
-import { setError, resetError } from "./error/errorSlice";
+import { setError, resetError } from "./error/error-slice";
 
 const isDuplicate = ({ name }, contacts) => {
   const normalizedName = name.toLowerCase();
