@@ -1,59 +1,64 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+import Notiflix from 'notiflix';
+import { postContactsOperations } from "../../redux/operations";
 import s from "../App.module.scss"
 
-const ContactForm = props => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const data = { name, number };
+function ContactForm() {
+  const [state, setState] = useState({
+    name: "",
+    phone: "",
+  });
 
-  const OnSubmit = e => {
+  const dispatch = useDispatch();
+  const { name, phone } = state;
+
+  const nameId = nanoid();
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    props.onSubmitProp(data);
-    reset();
+    addContact(state);
+    e.target.reset(
+      setState({
+        name: "",
+        phone: "",
+      })
+    );
   };
 
-  const onChange = e => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        console.log('Something wrong');
-        break;
-    }
+
+  const handleChange = ({ target }) => {
+    setState((prevState) => {
+      return { ...prevState, [target.name]: target.value };
+    });
   };
 
-  const reset = () => {
-    setName('');
-    setNumber('');
-  };
-
+  function addContact(data) {
+    dispatch(postContactsOperations(data));
+  }
   return (
     <form
       className={ s.form }
-      onSubmit={ OnSubmit }>
+      onSubmit={ handleSubmit }>
       <input
         type="text"
-        id={ name }
+        id={ nameId }
         name="name"
         value={ name }
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         required
-        onChange={ onChange }
+        onChange={ handleChange }
       />
       <input
+        onChange={ handleChange }
         type="tel"
-        name="number"
-        value={ number }
+        name="phone"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+        value={ phone }
         required
-        onChange={ onChange }
       />
       <button type="submit">Add Contact</button>
     </form>
