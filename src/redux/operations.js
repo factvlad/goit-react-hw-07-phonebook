@@ -11,7 +11,6 @@ import {
   postContact,
 } from "./contacts/contacts-slice";
 import { setError, resetError } from "./error/errorSlice";
-import { onLoader, offLoader } from "./loader/loaderSlice";
 
 const isDuplicate = ({ name }, contacts) => {
   const normalizedName = name.toLowerCase();
@@ -42,13 +41,10 @@ export const getContactsOperations = () => {
   return async (dispatch) => {
     try {
       dispatch(resetError(null));
-      dispatch(onLoader());
       const { data } = await fetchGetContacts();
       dispatch(getContacts(data));
-      dispatch(offLoader());
     } catch (error) {
       dispatch(setError(error.message));
-      dispatch(offLoader());
     }
   };
 };
