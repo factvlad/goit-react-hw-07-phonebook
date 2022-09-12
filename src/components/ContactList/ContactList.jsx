@@ -14,7 +14,8 @@ const ContactList = () => {
 
   useEffect(() => {
     dispatch(getContactsOperations());
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function removeContact(id) {
     dispatch(removeContactsOperation(id));
