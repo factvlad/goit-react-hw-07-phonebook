@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
-import Notiflix from 'notiflix';
 import { postContactsOperations } from "../../redux/operations";
 import s from "../App.module.scss"
 
